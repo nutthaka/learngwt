@@ -46,17 +46,9 @@ public class MyWebAppView {
 
         // We can add style names to widgets
         sendButton.addStyleName("sendButton");
+    }
 
-        // Add the nameField and sendButton to the RootPanel
-        // Use RootPanel.get() to get the entire body element
-        RootPanel.get("nameFieldContainer").add(nameField);
-        RootPanel.get("sendButtonContainer").add(sendButton);
-        RootPanel.get("errorLabelContainer").add(errorLabel);
-
-        // Focus the cursor on the name field when the app loads
-        nameField.setFocus(true);
-        nameField.selectAll();
-
+    private void createHiddenDialogBox() {
         // Create the popup dialog box
         dialogBox.setText("Remote Procedure Call");
         dialogBox.setAnimationEnabled(true);
@@ -71,5 +63,19 @@ public class MyWebAppView {
         dialogVPanel.setHorizontalAlignment(VerticalPanel.ALIGN_RIGHT);
         dialogVPanel.add(closeButton);
         dialogBox.setWidget(dialogVPanel);
+    }
+
+    public void drawOnScreen() {
+        // Add the nameField and sendButton to the RootPanel
+        // Use RootPanel.get() to get the entire body element
+        RootPanel.get("nameFieldContainer").add(nameField);
+        RootPanel.get("sendButtonContainer").add(sendButton);
+        RootPanel.get("errorLabelContainer").add(errorLabel);
+
+        // Focus the cursor on the name field when the app loads
+        nameField.setFocus(true);
+        nameField.selectAll();
+
+        createHiddenDialogBox();
     }
 }

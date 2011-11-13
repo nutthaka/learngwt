@@ -90,5 +90,7 @@ public class MyWebAppPresenter {
         MyHandler handler = new MyHandler();
         view.getSendButton().addClickHandler(handler);
         view.getNameField().addKeyUpHandler(handler);
+
+        view.drawOnScreen();
     }
 }
