@@ -22,6 +22,19 @@ public class MyWebAppPresenter {
             }
         });
 
+
+        view.getSampleListBox().addChangeHandler(new ChangeHandler() {
+            @Override
+            public void onChange(ChangeEvent changeEvent) {
+                view.clearListBoxError();
+                int selectedValue = Integer.parseInt(view.getSampleListBox().getValue(view.getSampleListBox().getSelectedIndex()));
+                if (selectedValue > 5){
+                    view.setListBoxErrorText("Please select value less than or equal to 5.");
+                }
+
+            }
+        });
+
         // Create a handler for the sendButton and nameField
         class MyHandler implements ClickHandler, KeyUpHandler {
             /**
@@ -76,6 +89,7 @@ public class MyWebAppPresenter {
         view.getSendButton().addClickHandler(handler);
         view.getNameField().addKeyUpHandler(handler);
 
+        view.addNumbersToListBox(new MyWebAppModel().getListOfNumbers());
         view.drawOnScreen();
     }
 

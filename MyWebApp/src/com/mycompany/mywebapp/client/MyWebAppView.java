@@ -2,6 +2,8 @@ package com.mycompany.mywebapp.client;
 
 import com.google.gwt.user.client.ui.*;
 
+import java.util.List;
+
 public class MyWebAppView {
 
     /**
@@ -18,6 +20,8 @@ public class MyWebAppView {
     private final Button closeButton = new Button("Close");
     private final Label textToServerLabel = new Label();
     private final HTML serverResponseLabel = new HTML();
+    private final ListBox sampleListBox = new ListBox();
+    private final Label errorListBox = new Label();
 
     public Button getCloseButton() {
         return closeButton;
@@ -29,6 +33,10 @@ public class MyWebAppView {
 
     public TextBox getNameField() {
         return nameField;
+    }
+
+    public ListBox getSampleListBox() {
+        return sampleListBox;
     }
 
     public MyWebAppView() {
@@ -62,12 +70,20 @@ public class MyWebAppView {
         RootPanel.get("nameFieldContainer").add(nameField);
         RootPanel.get("sendButtonContainer").add(sendButton);
         RootPanel.get("errorLabelContainer").add(errorLabel);
+        RootPanel.get("listBoxFieldContainer").add(sampleListBox);
+        RootPanel.get("errorListBoxContainer").add(errorListBox);
 
         // Focus the cursor on the name field when the app loads
         nameField.setFocus(true);
         nameField.selectAll();
 
         createHiddenDialogBox();
+    }
+
+    public void addNumbersToListBox(List<Integer> listOfNumbers) {
+        for (Integer number : listOfNumbers) {
+            sampleListBox.addItem(number.toString());
+        }
     }
 
     public void closeDialogBox() {
@@ -109,5 +125,13 @@ public class MyWebAppView {
 
     public void setErrorText(String errorMessage) {
         errorLabel.setText(errorMessage);
+    }
+
+    public void setListBoxErrorText(String errorText) {
+        errorListBox.setText(errorText);
+    }
+
+    public void clearListBoxError() {
+        errorListBox.setText("");
     }
 }
