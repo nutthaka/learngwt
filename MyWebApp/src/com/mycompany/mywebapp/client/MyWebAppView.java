@@ -4,6 +4,13 @@ import com.google.gwt.user.client.ui.*;
 
 public class MyWebAppView {
 
+    /**
+     * The message displayed to the user when the server cannot be reached or
+     * returns an error.
+     */
+    private static final String SERVER_ERROR = "An error occurred while "
+            + "attempting to contact the server. Please check your network "
+            + "connection and try again.";
     private final Button sendButton = new Button("Send");
     private final TextBox nameField = new TextBox();
     private final Label errorLabel = new Label();
@@ -11,14 +18,6 @@ public class MyWebAppView {
     private final Button closeButton = new Button("Close");
     private final Label textToServerLabel = new Label();
     private final HTML serverResponseLabel = new HTML();
-
-    public HTML getServerResponseLabel() {
-        return serverResponseLabel;
-    }
-
-    public Label getTextToServerLabel() {
-        return textToServerLabel;
-    }
 
     public Button getCloseButton() {
         return closeButton;
@@ -30,14 +29,6 @@ public class MyWebAppView {
 
     public TextBox getNameField() {
         return nameField;
-    }
-
-    public Label getErrorLabel() {
-        return errorLabel;
-    }
-
-    public DialogBox getDialogBox() {
-        return dialogBox;
     }
 
     public MyWebAppView() {
@@ -77,5 +68,46 @@ public class MyWebAppView {
         nameField.selectAll();
 
         createHiddenDialogBox();
+    }
+
+    public void closeDialogBox() {
+        dialogBox.hide();
+        sendButton.setEnabled(true);
+        sendButton.setFocus(true);
+    }
+
+    public void prepareDialogBox(String textToServer) {
+        sendButton.setEnabled(false);
+        textToServerLabel.setText(textToServer);
+        serverResponseLabel.setText("");
+    }
+
+    public void showDialogBoxOnSuccess(String result) {
+        dialogBox.setText("Remote Procedure Call");
+        serverResponseLabel.removeStyleName("serverResponseLabelError");
+        serverResponseLabel.setHTML(result);
+        dialogBox.center();
+        closeButton.setFocus(true);
+    }
+
+    public void showDialogBoxOnFailure() {
+        // Show the RPC error message to the user
+        dialogBox.setText("Remote Procedure Call - Failure");
+        serverResponseLabel.addStyleName("serverResponseLabelError");
+        serverResponseLabel.setHTML(SERVER_ERROR);
+        dialogBox.center();
+        closeButton.setFocus(true);
+    }
+
+    public void clearErrors() {
+        errorLabel.setText("");
+    }
+
+    public String getEnteredName() {
+        return nameField.getText();
+    }
+
+    public void setErrorText(String errorMessage) {
+        errorLabel.setText(errorMessage);
     }
 }

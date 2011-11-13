@@ -6,13 +6,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.mycompany.mywebapp.shared.FieldVerifier;
 
 public class MyWebAppPresenter {
-    /**
-     * The message displayed to the user when the server cannot be reached or
-     * returns an error.
-     */
-    private static final String SERVER_ERROR = "An error occurred while "
-            + "attempting to contact the server. Please check your network "
-            + "connection and try again.";
 
 
     /**
@@ -25,9 +18,7 @@ public class MyWebAppPresenter {
         // Add a handler to close the DialogBox
         view.getCloseButton().addClickHandler(new ClickHandler() {
             public void onClick(ClickEvent event) {
-                view.getDialogBox().hide();
-                view.getSendButton().setEnabled(true);
-                view.getSendButton().setFocus(true);
+                view.closeDialogBox();
             }
         });
 
@@ -54,36 +45,30 @@ public class MyWebAppPresenter {
              */
             private void sendNameToServer() {
                 // First, we validate the input.
-                view.getErrorLabel().setText("");
-                String textToServer = view.getNameField().getText();
+                view.clearErrors();
+                String textToServer = view.getEnteredName();
                 if (!FieldVerifier.isValidName(textToServer)) {
-                    view.getErrorLabel().setText("Please enter at least four characters");
+                    view.setErrorText("Please enter at least four characters");
                     return;
                 }
 
                 // Then, we send the input to the server.
-                view.getSendButton().setEnabled(false);
-                view.getTextToServerLabel().setText(textToServer);
-                view.getServerResponseLabel().setText("");
+                view.prepareDialogBox(textToServer);
                 greetingService.greetServer(textToServer, new AsyncCallback<String>() {
                     public void onFailure(Throwable caught) {
-                        // Show the RPC error message to the user
-                        view.getDialogBox().setText("Remote Procedure Call - Failure");
-                        view.getServerResponseLabel().addStyleName("serverResponseLabelError");
-                        view.getServerResponseLabel().setHTML(SERVER_ERROR);
-                        view.getDialogBox().center();
-                        view.getCloseButton().setFocus(true);
+                        view.showDialogBoxOnFailure();
+
                     }
 
                     public void onSuccess(String result) {
-                        view.getDialogBox().setText("Remote Procedure Call");
-                        view.getServerResponseLabel().removeStyleName("serverResponseLabelError");
-                        view.getServerResponseLabel().setHTML(result);
-                        view.getDialogBox().center();
-                        view.getCloseButton().setFocus(true);
+                        view.showDialogBoxOnSuccess(result);
                     }
                 });
             }
+
+
+
+
         }
 
         // Add a handler to send the name to the server
@@ -93,4 +78,5 @@ public class MyWebAppPresenter {
 
         view.drawOnScreen();
     }
+
 }
