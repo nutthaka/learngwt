@@ -1,0 +1,7 @@
+MyWebApp/.idea
+MyWebApp/gwt-unitCache
+MyWebApp/MyWebApp.iml
+MyWebApp/war/mywebapp
+MyWebApp/war/WEB-INF/classes
+MyWebApp/war/WEB-INF/deploy
+MyWebApp/war/WEB-INF/lib
